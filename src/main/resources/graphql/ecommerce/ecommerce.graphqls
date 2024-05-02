@@ -1,0 +1,6 @@
+#import "./entities/sqq.graphqls"
+
+type Query {
+   sqqCheck(email: String!): RCheckEmailDTO
+   sqqLogin(userId: String!, password: String!): RLoginDTO
+}

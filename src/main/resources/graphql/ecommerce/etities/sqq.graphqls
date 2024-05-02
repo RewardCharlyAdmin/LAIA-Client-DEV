@@ -1,0 +1,11 @@
+type RCheckEmailDTO {
+   userId: Int!
+   exist: Int!
+}
+
+type RLoginDTO {
+   name: String
+   surname: String
+   media: String
+   status: Int!
+}
