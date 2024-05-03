@@ -1,0 +1,14 @@
+type DirectionDTO {
+   id: Int!
+   user: Int
+   code: String
+   country: String
+   state: String
+   city: String
+   street: String
+   number: String
+   reference: String
+   lat: String
+   lng: String
+   note: String
+}

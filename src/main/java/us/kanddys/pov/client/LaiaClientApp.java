@@ -9,5 +9,4 @@ public class LaiaClientApp {
    public static void main(String[] args) {
       SpringApplication.run(LaiaClientApp.class, args);
    }
-
 }

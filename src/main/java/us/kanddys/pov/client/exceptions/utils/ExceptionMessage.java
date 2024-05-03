@@ -7,4 +7,5 @@ package us.kanddys.pov.client.exceptions.utils;
 public class ExceptionMessage {
 
    public static final String USER_NOT_FOUND = "El usuario buscado no existe";
+   public static final String DIRECTION_NOT_FOUND = "La dirección buscada no existe";
 }
