@@ -1,5 +1,8 @@
 package us.kanddys.pov.client.models;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,5 +43,27 @@ public class User {
    private String reference;
 
    public User() {
+   }
+
+   /**
+    * Constructor personalizado utilizado cuando el usuario se registra por primera
+    * vez.
+    *
+    * @author Igirod0
+    * @version 1.0.0
+    * @param email
+    * @param name
+    * @param phone
+    * @param password
+    */
+   public User(String email, String name, String phone, Optional<String> password) {
+      super();
+      this.id = null;
+      this.email = email;
+      this.name = name;
+      this.phone = phone;
+      this.password = (password.isPresent()) ? password.get() : UUID.randomUUID().toString().substring(0, 10);
+      this.first = 1;
+      this.reference = UUID.randomUUID().toString().substring(0, 10);
    }
 }

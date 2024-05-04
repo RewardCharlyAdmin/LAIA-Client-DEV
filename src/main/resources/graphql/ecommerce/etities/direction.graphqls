@@ -1,6 +1,5 @@
 type DirectionDTO {
    id: Int!
-   user: Int
    code: String
    country: String
    state: String

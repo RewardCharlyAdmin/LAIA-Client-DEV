@@ -3,6 +3,7 @@ package us.kanddys.pov.client.repositories.jpas;
 import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,8 @@ public interface UserJpaRepository extends JpaRepository<User, Long> {
 
    @Query(value = "SELECT name, surname, media, password FROM users WHERE id = :userId", nativeQuery = true)
    Map<String, Object> findNameAndSurnameAndMediaAndPasswordByUserId(Long userId);
+
+   @Modifying
+   @Query(value = "UPDATE users SET media = :media WHERE id = :userId", nativeQuery = true)
+   void updateMediaByUserId(Long userId, String media);
 }

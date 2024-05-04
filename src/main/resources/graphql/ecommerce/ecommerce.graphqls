@@ -11,4 +11,5 @@ type Mutation {
    cClientDirection(user: Int, code: String, country: String, state: String, city: String, street: String, number: String, reference: String, lat: String, lng: String, note: String): Int
    uClientDirection(id: Int!, code: String, country: String, state: String, city: String, street: String, number: String, reference: String, lat: String, lng: String, note: String): Int
    dClientDirection(id: Int!): Int
+   cClientUser(email: String, phone: String, password: String, name: String): Int
 }
