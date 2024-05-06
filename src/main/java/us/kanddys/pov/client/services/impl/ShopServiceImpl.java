@@ -4,18 +4,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import us.kanddys.pov.client.exceptions.LibraryNotFoundException;
+import us.kanddys.pov.client.exceptions.MerchantNotFoundException;
+import us.kanddys.pov.client.exceptions.ProductNotFoundException;
 import us.kanddys.pov.client.exceptions.utils.ExceptionMessage;
 import us.kanddys.pov.client.models.Library;
 import us.kanddys.pov.client.models.LibraryCollection;
+import us.kanddys.pov.client.models.Product;
+import us.kanddys.pov.client.models.dtos.ShopProductDetailDTO;
+import us.kanddys.pov.client.models.dtos.ShopProductDetailSegmentDTO;
 import us.kanddys.pov.client.repositories.jpas.BuyerJpaRepository;
+import us.kanddys.pov.client.repositories.jpas.CalendarJpaRepository;
 import us.kanddys.pov.client.repositories.jpas.LibraryCollectionJpaRepository;
 import us.kanddys.pov.client.repositories.jpas.LibraryJpaRepository;
+import us.kanddys.pov.client.repositories.jpas.MerchantJpaRepository;
+import us.kanddys.pov.client.repositories.jpas.ProductJpaRepository;
+import us.kanddys.pov.client.repositories.jpas.ProductSegmentJpaRepository;
 import us.kanddys.pov.client.services.BuyerLibraryService;
+import us.kanddys.pov.client.services.FirstShippingDateService;
 import us.kanddys.pov.client.services.ShopService;
 
 /**
@@ -36,6 +48,21 @@ public class ShopServiceImpl implements ShopService {
 
    @Autowired
    private BuyerLibraryService buyerLibraryService;
+
+   @Autowired
+   private MerchantJpaRepository merchantJpaRepository;
+
+   @Autowired
+   private ProductSegmentJpaRepository productSegmentJpaRepository;
+
+   @Autowired
+   private CalendarJpaRepository calendarJpaRepository;
+
+   @Autowired
+   private ProductJpaRepository productJpaRepository;
+
+   @Autowired
+   private FirstShippingDateService firstShippingDateService;
 
    @Override
    public Map<String, Object> getShop(Long merchant, Long libraryId) {
@@ -104,4 +131,20 @@ public class ShopServiceImpl implements ShopService {
       return response;
    }
 
+   @Override
+   public ShopProductDetailDTO gClientShopProductDetail(Long product, String slug) {
+      Map<String, Object> merchantAtributtes = merchantJpaRepository.findMerchantIdAndTitle(slug);
+      if (merchantAtributtes == null)
+         throw new MerchantNotFoundException(ExceptionMessage.MERCHANT_NOT_FOUND);
+      Set<ShopProductDetailSegmentDTO> segments = productSegmentJpaRepository.findByProduct(product).stream()
+            .map(ShopProductDetailSegmentDTO::new)
+            .collect(Collectors.toSet());
+      Map<String, Object> calendarAtributtes = calendarJpaRepository.findDelayAndDelayTypeAndIdByMerchant(
+            merchantAtributtes.get("id") == null ? null : Long.valueOf(merchantAtributtes.get("id").toString()));
+      Product productAtributtes = productJpaRepository.findById(product)
+            .orElseThrow(() -> new ProductNotFoundException(ExceptionMessage.PRODUCT_NOT_FOUND));
+      // ! CALCULO DE FECHA DE ENVÍO.
+      String firstShippingDate = firstShippingDateService.gClientShippingDate(null, null, null, null);
+      return null;
+   }
 }

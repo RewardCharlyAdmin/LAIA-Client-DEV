@@ -1,0 +1,9 @@
+type InvoiceInputDTO {
+   user: Int
+   userEmail: String
+   userName: String
+   userSurname: String
+   userPhone: String
+   userMedia: String
+   userRef: String
+}

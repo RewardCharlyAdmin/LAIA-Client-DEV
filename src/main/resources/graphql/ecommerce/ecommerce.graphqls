@@ -1,10 +1,12 @@
 #import "./entities/sqq.graphqls"
 #import "./entities/direction.graphqls"
+#import "./entities/invoice.graphqls"
 
 type Query {
    sqqCheck(email: String!): RCheckEmailDTO
    sqqLogin(userId: String!, password: String!): RLoginDTO
    gClientDirections(id: Int!): [DirectionDTO]
+   gClientShopProductDetail(product: int!, slug: String!): ProductDetailDTO
 }
 
 type Mutation {
@@ -12,4 +14,7 @@ type Mutation {
    uClientDirection(id: Int!, code: String, country: String, state: String, city: String, street: String, number: String, reference: String, lat: String, lng: String, note: String): Int
    dClientDirection(id: Int!): Int
    cClientUser(email: String, phone: String, password: String, name: String): Int
+   cClientInvoice(invoiceInputDTO: InvoiceInputDTO): Int
+   aClientInvoiceProduct(invoice: Int!, product: Int!): Int
+   dClientInvoiceProduct(invoiceProduct: Int!): Int
 }
